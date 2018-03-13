@@ -32,6 +32,10 @@ def ReadInitialDEM(InitialFileName):
     """
     # read in the DEMs
     InitialDEM = gdal_io.ReadRasterArrayBlocks(InitialFileName,raster_band=1)
+    # strip the nans
+    InitialDEM = InitialDEM[np.logical_not(np.isnan(InitialDEM))]
+    print("Initial DEM size: ", np.shape(InitialDEM))
+
     return InitialDEM
 
 def ReadReference(InitialDEM, RefFileName):
@@ -39,6 +43,8 @@ def ReadReference(InitialDEM, RefFileName):
     Function to read in the reference DEM and return the reference DEM of difference and the standard deviation
     """
     RefDEM = gdal_io.ReadRasterArrayBlocks(RefFileName,raster_band=1)
+    RefDEM = RefDEM[np.logical_not(np.isnan(RefDEM))]
+    print("Ref DEM size: ", np.shape(RefDEM))
 
     # get the reference DOD
     RefDoD = dem_difference(RefDEM,InitialDEM)
@@ -53,6 +59,8 @@ def CalculateTaylorPoint(DEMFileName, InitialDEM, RefDoD):
     Function to read in a DEM, calculate the DEM of difference and return the Pearson correlation and standard deviation compared to the reference DEM of difference
     """
     ThisDEM = gdal_io.ReadRasterArrayBlocks(DEMFileName,raster_band=1)
+    ThisDEM = ThisDEM[np.logical_not(np.isnan(ThisDEM))]
+    print("This DEM size: ", np.shape(ThisDEM))
 
     #get the DOD
     ThisDoD = dem_difference(ThisDEM,Initial_DEM)
