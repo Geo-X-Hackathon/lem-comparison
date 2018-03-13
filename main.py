@@ -10,7 +10,7 @@ from correlation import *
 from taylorDiagram import *
 from glob import glob
 
-# define the filenames
+# define the FileNames
 DataDirectory = '../Caesar-Ddata/'
 InitialFileName = 'DEM_init.txt'
 RefFileName = 'A1-210.txt'
@@ -28,9 +28,9 @@ RefDod, RefStd = ReadReference(InitialDEM,DataDirectory+RefFileName)
 #create figure
 fig = plt.figure(figsize=(10, 5))
 
-dia = TaylorDiagram(RefStd, fig=fig, rect=221, label="Reference")
-dia3 = TaylorDiagram(RefStd, fig=fig, rect=223, label="Reference")
-dia4 = TaylorDiagram(RefStd, fig=fig, rect=224, label="Reference")
+dia = TaylorDiagram(RefStd, fig=fig, rect=131, label="Reference")
+dia3 = TaylorDiagram(RefStd, fig=fig, rect=132, label="Reference")
+dia4 = TaylorDiagram(RefStd, fig=fig, rect=133, label="Reference")
 
 # Add grid
 dia.add_grid()
@@ -56,18 +56,18 @@ n_files = len(files)
 colors = plt.matplotlib.cm.Reds(np.linspace(0.1, 0.9, n_files))
 for i, DEMFileName in enumerate(files):
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
-    dia3.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k')
+    dia3.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
     if (DEMFileName.endswith('D1-210.txt')):
-        dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k')
+        dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
 
 # D3
 files = sorted(glob(DataDirectory+'D3*.txt'))
 colors = plt.matplotlib.cm.Blues(np.linspace(0.1, 0.9, n_files))
 for i, DEMFileName in enumerate(files):
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
-    dia3.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k')
+    dia3.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
     if (DEMFileName.endswith('D3-210.txt')):
-        dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k')
+        dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
 
 # D2
 files = sorted(glob(DataDirectory+'D2*.txt'))
@@ -75,9 +75,9 @@ colors = plt.matplotlib.cm.Greens(np.linspace(0.3, 0.7, n_files))
 
 for i, DEMFileName in enumerate(files):
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
-    dia4.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k')
+    dia4.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
     if (DEMFileName.endswith('D2-210.txt')):
-        dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k')
+        dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
 
 # D4
 files = sorted(glob(DataDirectory+'D4*.txt'))
@@ -85,8 +85,15 @@ colors = plt.matplotlib.cm.Wistia(np.linspace(0.3, 0.7, n_files))
 
 for i, DEMFileName in enumerate(files):
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
-    dia4.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k')
+    dia4.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
     if (DEMFileName.endswith('D4-210.txt')):
-        dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k')
+        dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
+
+   
+# add legend
+fig.legend(dia.samplePoints,
+           [ p.get_label() for p in dia.samplePoints ],
+           numpoints=1, prop=dict(size='small'), loc='center left')
+
 
 plt.show()
