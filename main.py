@@ -31,7 +31,8 @@ plt.plot(diff2)
 refdata = np.mean([diff1, diff2],axis = 0)
 
 # get the pearson correlation coefficient and standard deviation
-r1, std1 = pearson_correlation_std(refdata, diff1)
+r1 = pearson_correlation(refdata, diff1)
+std1 = standard_deviation(diff1)
 print("pearon_r1: ", r1)
 print("std1: ", std1)
 
