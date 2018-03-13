@@ -26,7 +26,7 @@ RefDod, RefStd = ReadReference(InitialDEM,DataDirectory+RefFileName)
 # now for each other DEM, calculate the pearson correlation and standard deviation
 
 #create figure
-fig = plt.figure(figsize=(10, 5))
+fig = plt.figure(figsize=(12, 5))
 
 dia = TaylorDiagram(RefStd, fig=fig, rect=131, label="Reference")
 dia3 = TaylorDiagram(RefStd, fig=fig, rect=132, label="Reference")
@@ -95,5 +95,7 @@ fig.legend(dia.samplePoints,
            [ p.get_label() for p in dia.samplePoints ],
            numpoints=1, prop=dict(size='small'), loc='center left')
 
+
+plt.savefig(DataDirectory+"fig1.png",format="png",dpi=300)
 
 plt.show()
