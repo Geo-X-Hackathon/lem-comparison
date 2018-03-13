@@ -41,13 +41,13 @@ contours = dia.add_contours(colors='0.5')
 PLT.clabel(contours, inline=1, fontsize=10, fmt='%.2f')
 
 pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS1,InitialDEM,RefDod)
-dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='r', mec='k')
+dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='r', mec='r')
 
 pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS2,InitialDEM,RefDod)
-dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='g', mec='k')
+dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='g', mec='g')
 
 pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS3,InitialDEM,RefDod)
-dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='b', mec='k')
+dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='b', mec='b')
 
 pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS4,InitialDEM,RefDod)
-dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='k', mec='r')
+dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='y', mec='y')
