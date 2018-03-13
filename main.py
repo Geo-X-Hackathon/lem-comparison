@@ -39,9 +39,9 @@ plt.subplot(3,1,2)
 plt.plot(diff2)
 
 # mean of differences
-diffmean = np.mean([diff1, diff2],axis = 0)
+refdata = np.mean([diff1, diff2],axis = 0)
 
 plt.subplot(3,1,3)
-plt.plot(diffmean)
+plt.plot(refdata)
 plt.show()
 
