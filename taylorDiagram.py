@@ -51,7 +51,7 @@ class TaylorDiagram(object):
 
         # Standard deviation axis extent (in units of reference stddev)
         self.smin = srange[0]*self.refstd
-        self.smax = srange[1]*self.refstd
+        self.smax = srange[1]*self.refstd+.1
 
         ghelper = FA.GridHelperCurveLinear(tr,
                                            extremes=(0, NP.pi/2,  # 1st quadrant

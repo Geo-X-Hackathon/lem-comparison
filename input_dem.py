@@ -63,7 +63,7 @@ def CalculateTaylorPoint(DEMFileName, InitialDEM, RefDoD):
     print("This DEM size: ", np.shape(ThisDEM))
 
     #get the DOD
-    ThisDoD = dem_difference(ThisDEM,Initial_DEM)
+    ThisDoD = dem_difference(ThisDEM,InitialDEM)
 
     # get the pearson correlation and std compared to the reference DoD
     ThisR = pearson_correlation(RefDoD, ThisDoD)
