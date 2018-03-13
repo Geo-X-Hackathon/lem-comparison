@@ -32,7 +32,7 @@ def ReadInitialDEM(InitialFileName):
     """
     # read in the DEMs
     InitialDEM = gdal_io.ReadRasterArrayBlocks(InitialFileName,raster_band=1)
-    return InitialTopoArray
+    return InitialDEM
 
 def ReadReference(InitialDEM, RefFileName):
     """
@@ -41,7 +41,7 @@ def ReadReference(InitialDEM, RefFileName):
     RefDEM = gdal_io.ReadRasterArrayBlocks(RefFileName,raster_band=1)
 
     # get the reference DOD
-    RefDoD = dem_difference(RefDEM - InitialDEM)
+    RefDoD = dem_difference(RefDEM,InitialDEM)
 
     # get the standard deviation of the reference DOD
     std = standard_deviation(RefDoD)
@@ -55,7 +55,7 @@ def CalculateTaylorPoint(DEMFileName, InitialDEM, RefDoD):
     ThisDEM = gdal_io.ReadRasterArrayBlocks(DEMFileName,raster_band=1)
 
     #get the DOD
-    ThisDoD = dem_difference(ThisDEM - Initial_DEM)
+    ThisDoD = dem_difference(ThisDEM,Initial_DEM)
 
     # get the pearson correlation and std compared to the reference DoD
     ThisR = pearson_correlation(RefDoD, ThisDoD)

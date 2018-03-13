@@ -11,15 +11,16 @@ from correlation import *
 
 # define the filenames
 DataDirectory = '../Caesar-Ddata/'
-InitialFileName = 'D4elev.dat76212001.txt'
-Filename_TS1 = 'D4elev.dat73584003.txt'
-Filename_TS2 = 'D4elev.dat110376000.txt'
+InitialFileName = 'DEM_init.txt'
+RefFileName = 'A1-210.txt'
+Filename_TS1 = 'D4-210.txt'
+Filename_TS2 = 'C4-210.txt'
 
 # get the initial DEM
 InitialDEM = ReadInitialDEM(DataDirectory+InitialFileName)
 
 # get the reference DoD and std
-RefDod, RefStd = ReadReference(InitialDEM, RefFileName)
+RefDod, RefStd = ReadReference(InitialDEM,DataDirectory+RefFileName)
 print(RefDod)
 print(RefStd)
 
