@@ -3,6 +3,8 @@
 
 import gdalio as gdal_io
 import numpy as np
+import matplotlib.pyplot as plt
+from differences import *
 
 # read in the raster
 DataDirectory = '../CAESAR_data/'
@@ -22,6 +24,24 @@ InitialTopoArray = InitialTopoArray[np.logical_not(np.isnan(InitialTopoArray))]
 TimeStep1Array = TimeStep1Array[np.logical_not(np.isnan(TimeStep1Array))]
 TimeStep2Array = TimeStep2Array[np.logical_not(np.isnan(TimeStep2Array))]
 
-print len(InitialTopoArray)
+print np.shape(InitialTopoArray)
 print len(TimeStep1Array)
 print len(TimeStep2Array)
+
+# differences for the raster arrays (as vectors)
+diff1 = dem_difference(InitialTopoArray,TimeStep1Array)
+diff2 = dem_difference(InitialTopoArray,TimeStep2Array)
+
+plt.figure
+plt.subplot(3,1,1)
+plt.plot(diff1)
+plt.subplot(3,1,2)
+plt.plot(diff2)
+
+# mean of differences
+diffmean = np.mean([diff1, diff2],axis = 0)
+
+plt.subplot(3,1,3)
+plt.plot(diffmean)
+plt.show()
+
