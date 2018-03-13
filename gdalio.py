@@ -13,7 +13,6 @@ import osgeo.gdal as gdal
 import osgeo.gdal_array as gdal_array
 import numpy as np
 from osgeo import osr
-from osgeo import ogr
 import os
 from os.path import exists
 from osgeo.gdalconst import GA_ReadOnly
