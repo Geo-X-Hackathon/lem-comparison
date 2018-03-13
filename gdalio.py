@@ -459,7 +459,7 @@ def ReadRasterArrayBlocks(raster_file,raster_band=1):
     xsize = band.XSize
     ysize = band.YSize
 
-    print("xsize: " +str(xsize)+" and y size: " + str(ysize))
+    #print("xsize: " +str(xsize)+" and y size: " + str(ysize))
 
     max_value = band.GetMaximum()
     min_value = band.GetMinimum()
@@ -493,7 +493,7 @@ def ReadRasterArrayBlocks(raster_file,raster_band=1):
             # move these values to the data array
             data_array[i:i+rows,j:j+cols] = values
 
-    print("NoData is:", NoDataValue)
+    #print("NoData is:", NoDataValue)
     if NoDataValue is not None:
         nodata_mask = data_array == NoDataValue
         data_array[nodata_mask] = np.nan

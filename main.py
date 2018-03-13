@@ -14,18 +14,14 @@ from glob import glob
 DataDirectory = '../Caesar-Ddata/'
 InitialFileName = 'DEM_init.txt'
 RefFileName = 'A1-210.txt'
-Filename_TS1 = 'D1-210.txt'
-Filename_TS2 = 'D2-210.txt'
-Filename_TS3 = 'D3-210.txt'
-Filename_TS4 = 'D4-210.txt'
 
 # get the initial DEM
 InitialDEM = ReadInitialDEM(DataDirectory+InitialFileName)
 
 # get the reference DoD and std
 RefDod, RefStd = ReadReference(InitialDEM,DataDirectory+RefFileName)
-print(RefDod)
-print(RefStd)
+#print(RefDod)
+#print(RefStd)
 
 # now for each other DEM, calculate the pearson correlation and standard deviation
 
@@ -52,7 +48,6 @@ files = sorted(glob(DataDirectory+'D1*.txt'))
 n_files = len(files)
 colors = plt.matplotlib.cm.Reds(np.linspace(0.1, 0.9, n_files))
 for i, DEMFileName in enumerate(files):
-    print DEMFileName
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
     dia.add_sample(pointsd, pointcp, marker='o', ms=10, ls='', mfc=colors[i], mec='k')
 

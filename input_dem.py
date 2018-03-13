@@ -34,7 +34,7 @@ def ReadInitialDEM(InitialFileName):
     InitialDEM = gdal_io.ReadRasterArrayBlocks(InitialFileName,raster_band=1)
     # strip the nans
     InitialDEM = InitialDEM[np.logical_not(np.isnan(InitialDEM))]
-    print("Initial DEM size: ", np.shape(InitialDEM))
+    #print("Initial DEM size: ", np.shape(InitialDEM))
 
     return InitialDEM
 
@@ -44,7 +44,7 @@ def ReadReference(InitialDEM, RefFileName):
     """
     RefDEM = gdal_io.ReadRasterArrayBlocks(RefFileName,raster_band=1)
     RefDEM = RefDEM[np.logical_not(np.isnan(RefDEM))]
-    print("Ref DEM size: ", np.shape(RefDEM))
+    #print("Ref DEM size: ", np.shape(RefDEM))
 
     # get the reference DOD
     RefDoD = dem_difference(RefDEM,InitialDEM)
@@ -60,7 +60,7 @@ def CalculateTaylorPoint(DEMFileName, InitialDEM, RefDoD):
     """
     ThisDEM = gdal_io.ReadRasterArrayBlocks(DEMFileName,raster_band=1)
     ThisDEM = ThisDEM[np.logical_not(np.isnan(ThisDEM))]
-    print("This DEM size: ", np.shape(ThisDEM))
+    #print("This DEM size: ", np.shape(ThisDEM))
 
     #get the DOD
     ThisDoD = dem_difference(ThisDEM,InitialDEM)
