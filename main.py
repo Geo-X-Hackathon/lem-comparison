@@ -5,6 +5,7 @@ import gdalio as gdal_io
 import numpy as np
 import matplotlib.pyplot as plt
 from differences import *
+from input_dem import *
 
 # read in the raster
 DataDirectory = '../CAESAR_data/'
@@ -12,21 +13,7 @@ InitialFileName = 'D4elev.dat76212001.txt'
 Filename_TS1 = 'D4elev.dat73584003.txt'
 Filename_TS2 = 'D4elev.dat110376000.txt'
 
-print ("Reading in the raster data...")
-
-# these are np.arrays with the raster data
-InitialTopoArray = gdal_io.ReadRasterArrayBlocks(DataDirectory+InitialFileName,raster_band=1)
-TimeStep1Array = gdal_io.ReadRasterArrayBlocks(DataDirectory+Filename_TS1,raster_band=1)
-TimeStep2Array = gdal_io.ReadRasterArrayBlocks(DataDirectory+Filename_TS2,raster_band=1)
-
-# strip the nans
-InitialTopoArray = InitialTopoArray[np.logical_not(np.isnan(InitialTopoArray))]
-TimeStep1Array = TimeStep1Array[np.logical_not(np.isnan(TimeStep1Array))]
-TimeStep2Array = TimeStep2Array[np.logical_not(np.isnan(TimeStep2Array))]
-
-print np.shape(InitialTopoArray)
-print len(TimeStep1Array)
-print len(TimeStep2Array)
+(InitialTopoArray, TimeStep1Array, TimeStep2Array) = input_caesar1(DataDirectory,InitialFileName,Filename_TS1,Filename_TS2)
 
 # differences for the raster arrays (as vectors)
 diff1 = dem_difference(InitialTopoArray,TimeStep1Array)
