@@ -79,19 +79,4 @@ for i, DEMFileName in enumerate(files):
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
     dia2.add_sample(pointsd, pointcp, marker='o', ms=10, ls='', mfc=colors[i], mec='k')
 
-
-
-
-# pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS1,InitialDEM,RefDod)
-# dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='r', mec='k')
-#
-# pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS2,InitialDEM,RefDod)
-# dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='g', mec='k')
-#
-# pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS3,InitialDEM,RefDod)
-# dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='b', mec='k')
-#
-# pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS4,InitialDEM,RefDod)
-# dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='k', mec='r')
-
 plt.show()
