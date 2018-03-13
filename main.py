@@ -5,6 +5,7 @@ import gdalio as gdal_io
 import numpy as np
 import matplotlib.pyplot as plt
 from differences import *
+from correlation import *
 
 # read in the raster
 DataDirectory = '../CAESAR_data/'
@@ -41,7 +42,11 @@ plt.plot(diff2)
 # mean of differences
 refdata = np.mean([diff1, diff2],axis = 0)
 
+# get the pearson correlation coefficient and standard deviation
+r1, std1 = pearson_correlation_std(refdata, diff1)
+print("pearon_r1: ", r1)
+print("std1: ", std1)
+
 plt.subplot(3,1,3)
 plt.plot(refdata)
 plt.show()
-
