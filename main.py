@@ -14,10 +14,10 @@ from taylorDiagram import *
 DataDirectory = '../Caesar-Ddata/'
 InitialFileName = 'DEM_init.txt'
 RefFileName = 'A1-210.txt'
-Filename_TS1 = 'D4-210.txt'
-Filename_TS2 = 'D3-210.txt'
-Filename_TS3 = 'D2-210.txt'
-Filename_TS4 = 'D1-210.txt'
+Filename_TS1 = 'D1-210.txt'
+Filename_TS2 = 'D2-210.txt'
+Filename_TS3 = 'D3-210.txt'
+Filename_TS4 = 'D4-210.txt'
 
 # get the initial DEM
 InitialDEM = ReadInitialDEM(DataDirectory+InitialFileName)
@@ -40,18 +40,14 @@ dia.add_grid()
 contours = dia.add_contours(colors='0.5')
 PLT.clabel(contours, inline=1, fontsize=10, fmt='%.2f')
 
-pointsd, pointcp = CalculateTaylorPoint(DataDirectory+Filename_TS1,InitialDEM,RefDod)
-
+pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS1,InitialDEM,RefDod)
 dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='r', mec='k')
 
-pointsd, pointcp = CalculateTaylorPoint(DataDirectory+Filename_TS2,InitialDEM,RefDod)
-
+pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS2,InitialDEM,RefDod)
 dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='g', mec='k')
 
-pointsd, pointcp = CalculateTaylorPoint(DataDirectory+Filename_TS3,InitialDEM,RefDod)
-
+pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS3,InitialDEM,RefDod)
 dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='b', mec='k')
 
-pointsd, pointcp = CalculateTaylorPoint(DataDirectory+Filename_TS4,InitialDEM,RefDod)
-
+pointcp, pointsd = CalculateTaylorPoint(DataDirectory+Filename_TS4,InitialDEM,RefDod)
 dia.add_sample(pointsd, pointcp, marker='o', ms=6, ls='', mfc='k', mec='r')
