@@ -21,7 +21,7 @@ class TaylorDiagram(object):
     theta=arccos(correlation).
     """
 
-    def __init__(self, refstd, fig=None, rect=111, label='_', srange=(0, 2)):
+    def __init__(self, refstd, fig=None, rect=111, label='_', srange=(0, 1.75)):
         """
         Set up Taylor diagram axes, i.e. single quadrant polar
         plot, using `mpl_toolkits.axisartist.floating_axes`.
@@ -90,6 +90,13 @@ class TaylorDiagram(object):
         t = NP.linspace(0, NP.pi/2)
         r = NP.zeros_like(t) + self.refstd
         self.ax.plot(t, r, 'k--', label='_')
+
+        # Add stdev contours
+        t = NP.linspace(0, NP.pi/2)
+        r = NP.zeros_like(t) + (self.refstd)*0.5
+        self.ax.plot(t, r, c='0.5', ls='--', label='_')
+        r = NP.zeros_like(t) + (self.refstd)*1.5
+        self.ax.plot(t, r, c='0.5', ls='--', label='_')
 
         # Collect sample points for latter use (e.g. legend)
         self.samplePoints = [l]
