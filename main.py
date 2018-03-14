@@ -127,16 +127,17 @@ def test1():
     
 def test2():
     """
-    Test 2: Taylor diagram for a single initial condition compared to a single reference case.
+    Test 2: Taylor diagram for a different initial conditions compared to different reference cases.
     """
+    # parameters
+    Normalize = 1
+
     
     # define the FileNames
     DataDirectory = '../Caesar-Ddata/'
     InitialFileName = 'DEM_init.txt'
     RefFileName = 'A1-210.txt'
     
-    # parameters
-    Normalize = 1
     
     # get the initial DEM
     InitialDEM = ReadInitialDEM(DataDirectory+InitialFileName)
@@ -152,24 +153,14 @@ def test2():
     
     if (Normalize == 1):
         dia = TaylorDiagram(RefStd/RefStd, fig=fig, rect=131, label="Reference")
-        dia3 = TaylorDiagram(RefStd/RefStd, fig=fig, rect=132, label="Reference")
-        dia4 = TaylorDiagram(RefStd/RefStd, fig=fig, rect=133, label="Reference")
     else:
         dia = TaylorDiagram(RefStd, fig=fig, rect=131, label="Reference")
-        dia3 = TaylorDiagram(RefStd, fig=fig, rect=132, label="Reference")
-        dia4 = TaylorDiagram(RefStd, fig=fig, rect=133, label="Reference")
         
     # Add grid
     dia.add_grid()
-    dia3.add_grid()
-    dia4.add_grid()
     
     # Add RMS contours, and label them
     contours = dia.add_contours(colors='0.5')
-    PLT.clabel(contours, inline=1, fontsize=10, fmt='%.2f')
-    contours = dia3.add_contours(colors='0.5')
-    PLT.clabel(contours, inline=1, fontsize=10, fmt='%.2f')
-    contours = dia4.add_contours(colors='0.5')
     PLT.clabel(contours, inline=1, fontsize=10, fmt='%.2f')
     
     
@@ -180,51 +171,53 @@ def test2():
     markersize = 8
     
     # D1
-    files = sorted(glob(DataDirectory+'D1*.txt'))
-    n_files = len(files)
-    colors = plt.matplotlib.cm.Reds(np.linspace(0.1, 0.9, n_files))
-    for i, DEMFileName in enumerate(files):
-        pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
-        if (Normalize == 1):
-            pointsd = pointsd/RefStd
-        dia3.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
-        if (DEMFileName.endswith('D1-210.txt')):
-            dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
-    
-    # D3
-    files = sorted(glob(DataDirectory+'D3*.txt'))
-    colors = plt.matplotlib.cm.Blues(np.linspace(0.1, 0.9, n_files))
-    for i, DEMFileName in enumerate(files):
-        pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
-        if (Normalize == 1):
-            pointsd = pointsd/RefStd
-        dia3.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
-        if (DEMFileName.endswith('D3-210.txt')):
-            dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
+    color = plt.matplotlib.cm.Reds(0.9)
+    DEMFileName = DataDirectory+'D1-210.txt'
+    pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
+    if (Normalize == 1):
+        pointsd = pointsd/RefStd
+    dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=color, mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
     
     # D2
-    files = sorted(glob(DataDirectory+'D2*.txt'))
-    colors = plt.matplotlib.cm.Greens(np.linspace(0.3, 0.7, n_files))
+    color = plt.matplotlib.cm.Greens(0.9)
+    DEMFileName = DataDirectory+'D2-210.txt'
+    pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
+    if (Normalize == 1):
+        pointsd = pointsd/RefStd
+    dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=color, mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
+
+
+    # now the other ones
+
+    # define the FileNames
+    DataDirectory = '../MuddPILE_data/'
+    InitialFileName = 'Initial_topography.bil'
+    RefFileName = 'Reference_TS60.bil'
+
+    # get the initial DEM
+    InitialDEM = ReadInitialDEM(DataDirectory+InitialFileName)
     
-    for i, DEMFileName in enumerate(files):
-        pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
-        if (Normalize == 1):
-            pointsd = pointsd/RefStd
-        dia4.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
-        if (DEMFileName.endswith('D2-210.txt')):
-            dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
+    # get the reference DoD and std
+    RefDod, RefStd = ReadReference(InitialDEM,DataDirectory+RefFileName)
     
-    # D4
-    files = sorted(glob(DataDirectory+'D4*.txt'))
-    colors = plt.matplotlib.cm.Wistia(np.linspace(0.3, 0.7, n_files))
+    # n = 1.5
+    color = plt.matplotlib.cm.Wistia(0.9)
+    DEMFileName = DataDirectory+'movern_0p35_n_is_one_and_half60.bil'
+    pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
+    if (Normalize == 1):
+        pointsd = pointsd/RefStd
+    dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=color, mec='k', label='MUDD n=1.5')
     
-    for i, DEMFileName in enumerate(files):
-        pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
-        if (Normalize == 1):
-            pointsd = pointsd/RefStd
-        dia4.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
-        if (DEMFileName.endswith('D4-210.txt')):
-            dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
+    # n = 2.0
+    color = plt.matplotlib.cm.Blues(0.9)
+    DEMFileName = DataDirectory+'movern_0p35_n_is_two60.bil'
+    pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
+    if (Normalize == 1):
+        pointsd = pointsd/RefStd
+    dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=color, mec='k', label='MUDD n=2.0')
+
+
+
 
        
     # add legend
@@ -233,7 +226,7 @@ def test2():
                numpoints=1, prop=dict(size='small'), loc='center left')
     
     
-    plt.savefig(DataDirectory+"fig1.png",format="png",dpi=300)
+    plt.savefig(DataDirectory+"fig2.png",format="png",dpi=300)
     
     return fig
     
