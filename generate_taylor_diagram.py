@@ -92,7 +92,6 @@ def AddTimeSeriesToDiagram(DataDirectory, SubDirectory, FilenamePrefix, DEM_exte
 
     # read in the files in the specified directory
     files = sorted(glob(DataDirectory+SubDirectory+FilenamePrefix+'*'+DEM_extension))
-    print files
     n_files = len(files)
     colors = colormap(np.linspace(0.1, 0.9, n_files))
 
@@ -120,14 +119,20 @@ if __name__ == '__main__':
     RefFileName = 'A1-210.txt'
     Normalize = 1
 
+    print ('Reading the intial and reference DEMs...')
+
     # read the initial DEM
     InitialDEM = ReadInitialDEM(DataDirectory+InitialFileName)
     # read the reference DEM
     RefDod, RefStd = ReadReference(InitialDEM,DataDirectory+RefFileName)
 
+    print ('Setting up the Taylor diagram...')
+
     # set up the Taylor Diagram
     figsize = (6,5) # the figure size in inches (width, height)
     fig, dia = SetUpTaylorDiagram(RefStd, Normalize, figsize)
+
+    print ('Now adding some time series...')
 
     # proof of concept - make a time series
     SubDir = 'D1/'
@@ -146,7 +151,8 @@ if __name__ == '__main__':
                [ p.get_label() for p in dia.samplePoints ],
                numpoints=1, prop=dict(size='medium'), loc='upper right')
 
+    print ('Done! Saving your figure :)')
 
     plt.subplots_adjust(left=0.05) # just some figure adjustment to allow space for legend
     # save the figure
-    plt.savefig(DataDirectory"taylor_diagram_time_series.png",format="png",dpi=300)
+    plt.savefig(DataDirectory+"taylor_diagram_time_series.png",format="png",dpi=300)
