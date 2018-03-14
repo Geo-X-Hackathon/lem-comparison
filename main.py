@@ -15,6 +15,9 @@ DataDirectory = '../Caesar-Ddata/'
 InitialFileName = 'DEM_init.txt'
 RefFileName = 'A1-210.txt'
 
+# parameters
+Normalize = 0
+
 # get the initial DEM
 InitialDEM = ReadInitialDEM(DataDirectory+InitialFileName)
 
@@ -23,15 +26,19 @@ RefDod, RefStd = ReadReference(InitialDEM,DataDirectory+RefFileName)
 #print(RefDod)
 #print(RefStd)
 
-# now for each other DEM, calculate the pearson correlation and standard deviation
 
 #create figure
 fig = plt.figure(figsize=(12, 5))
 
-dia = TaylorDiagram(RefStd, fig=fig, rect=131, label="Reference")
-dia3 = TaylorDiagram(RefStd, fig=fig, rect=132, label="Reference")
-dia4 = TaylorDiagram(RefStd, fig=fig, rect=133, label="Reference")
-
+if (Normalize == 1):
+    dia = TaylorDiagram(RefStd/RefStd, fig=fig, rect=131, label="Reference")
+    dia3 = TaylorDiagram(RefStd/RefStd, fig=fig, rect=132, label="Reference")
+    dia4 = TaylorDiagram(RefStd/RefStd, fig=fig, rect=133, label="Reference")
+else:
+    dia = TaylorDiagram(RefStd, fig=fig, rect=131, label="Reference")
+    dia3 = TaylorDiagram(RefStd, fig=fig, rect=132, label="Reference")
+    dia4 = TaylorDiagram(RefStd, fig=fig, rect=133, label="Reference")
+    
 # Add grid
 dia.add_grid()
 dia3.add_grid()
@@ -47,6 +54,8 @@ PLT.clabel(contours, inline=1, fontsize=10, fmt='%.2f')
 
 
 
+# now for each other DEM, calculate the pearson correlation and standard deviation
+
 # for each model run, get all the files and plot them onto the diagram
 markersize = 8
 
@@ -56,6 +65,8 @@ n_files = len(files)
 colors = plt.matplotlib.cm.Reds(np.linspace(0.1, 0.9, n_files))
 for i, DEMFileName in enumerate(files):
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
+    if (Normalize == 1):
+        pointsd = pointsd/RefStd
     dia3.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
     if (DEMFileName.endswith('D1-210.txt')):
         dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
@@ -65,6 +76,8 @@ files = sorted(glob(DataDirectory+'D3*.txt'))
 colors = plt.matplotlib.cm.Blues(np.linspace(0.1, 0.9, n_files))
 for i, DEMFileName in enumerate(files):
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
+    if (Normalize == 1):
+        pointsd = pointsd/RefStd
     dia3.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
     if (DEMFileName.endswith('D3-210.txt')):
         dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
@@ -75,6 +88,8 @@ colors = plt.matplotlib.cm.Greens(np.linspace(0.3, 0.7, n_files))
 
 for i, DEMFileName in enumerate(files):
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
+    if (Normalize == 1):
+        pointsd = pointsd/RefStd
     dia4.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
     if (DEMFileName.endswith('D2-210.txt')):
         dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
@@ -85,6 +100,8 @@ colors = plt.matplotlib.cm.Wistia(np.linspace(0.3, 0.7, n_files))
 
 for i, DEMFileName in enumerate(files):
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
+    if (Normalize == 1):
+        pointsd = pointsd/RefStd
     dia4.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
     if (DEMFileName.endswith('D4-210.txt')):
         dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=colors[i], mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
