@@ -9,8 +9,9 @@ from input_dem import *
 from correlation import *
 from taylorDiagram import *
 from glob import glob
+import os
 
-def SetUpTaylorDiagram(RefStd, Normalize=0):
+def SetUpTaylorDiagram(RefStd, Normalize=0, figsize=(10,10)):
     """
     Set up the taylor diagram using the intiial DEM and the
     reference DEM
@@ -22,7 +23,7 @@ def SetUpTaylorDiagram(RefStd, Normalize=0):
     """
 
     #create figure
-    fig = plt.figure(figsize=(10, 10))
+    fig = plt.figure(figsize=figsize)
 
     if (Normalize == 1):
         dia = TaylorDiagram(RefStd/RefStd, fig=fig, rect=111, label="Reference")
@@ -64,13 +65,59 @@ def AddSinglePointToDiagram(DataDirectory,DEMFileName, InitialDEM, RefDod, RefSt
         pointsd = pointsd/RefStd
     dia.add_sample(pointsd, pointcp, marker='o', ms=markersize, ls='', mfc=color, mec='k', label=this_label)
 
+def AddTimeSeriesToDiagram(DataDirectory, SubDirectory, FilenamePrefix, DEM_extension, InitialDEM, RefDod, RefStd, Normalize=0, colormap= plt.matplotlib.cm.viridis, label=' ', markersize=8, markerstyle='o'):
+    """
+    Function to add a time series of model runs to the diagram.  The time series should be in its own
+    sub-directory.
+    Ideally the DEMs need to have the format:
+        FilenamePrefix_XXX.extension
+
+    where XXX is the number.  Files will be read in ascending order (through time)
+
+    Args:
+        DataDirectory (str): the name of the data directory
+        SubDirectory (str): name of the subdirectory with the time series DEMs
+        FilenamePrefix (str): a standardised string for the start of the filename.
+        DEM_extension (str): a string with the extension of the DEM, e.g. "txt", "asc", or "bil"
+        InitialDEM (arr): array of the initial DEM
+        RefDod (arr): array with the DEM of difference for the reference DEM
+        RefStd (float): the standard deviation of the reference DoD
+        Normalize (int): a switch to choose whether or not to noramlise the standard
+        deviation. 0 = don't noramlise (default); 1 = normalise.
+        colormap (str): colormap for the points, default = viridis
+        label (list): you can pass a list to the legend for the labels. If not passed, then it will just be labelled with the name of each DEM.
+        markersize (int): size of the point
+        markerstyle (str): style of the marker, default = circle.
+    """
+
+    # read in the files in the specified directory
+    files = sorted(glob(DataDirectory+SubDirectory+FilenamePrefix+'*'+DEM_extension))
+    print files
+    n_files = len(files)
+    colors = colormap(np.linspace(0.1, 0.9, n_files))
+
+    # loop through and add each point to the diagram
+    for i, DEMFileName in enumerate(files):
+        # split the filename to just get that of the DEM
+        # first check the operating system - will be different if windows
+        path, file = os.path.split(DEMFileName)
+        file = file.split('.')[0]
+        # check if you want to specify your own labels
+        this_label = file
+        if label != ' ':
+            this_label = label[i]
+
+        pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
+        if (Normalize == 1):
+            pointsd = pointsd/RefStd
+        dia.add_sample(pointsd, pointcp, marker=markerstyle, ms=markersize, ls='', mfc=colors[i], mec='k', label=this_label)
 
 if __name__ == '__main__':
 
     # declare the parameters
-    DataDirectory = '../MuddPILE_data/'
-    InitialFileName = 'Initial_topography.bil'
-    RefFileName = 'Reference_TS60.bil'
+    DataDirectory = '../Caesar-Ddata/'
+    InitialFileName = 'DEM_init.txt'
+    RefFileName = 'A1-210.txt'
     Normalize = 1
 
     # read the initial DEM
@@ -79,13 +126,20 @@ if __name__ == '__main__':
     RefDod, RefStd = ReadReference(InitialDEM,DataDirectory+RefFileName)
 
     # set up the Taylor Diagram
-    fig, dia = SetUpTaylorDiagram(RefStd, Normalize)
+    figsize = (6,5) # the figure size in inches (width, height)
+    fig, dia = SetUpTaylorDiagram(RefStd, Normalize, figsize)
 
-    # proof of concept - just add one point to the diagram
-    DEMFileName = 'movern_0p35_n_is_two60.bil'
-    color = 'blue'
-    # now add a point
-    AddSinglePointToDiagram(DataDirectory,DEMFileName, InitialDEM, RefDod, RefStd, Normalize, color)
+    # proof of concept - make a time series
+    SubDir = 'D1/'
+    FilenamePrefix = 'D1'
+    colormap =  plt.matplotlib.cm.Reds
+    AddTimeSeriesToDiagram(DataDirectory,SubDir,FilenamePrefix,'txt',InitialDEM,RefDod,RefStd,Normalize,colormap)
+
+    # now add another one just for fun
+    SubDir = 'D3/'
+    FilenamePrefix = 'D3'
+    colormap = plt.matplotlib.cm.Blues
+    AddTimeSeriesToDiagram(DataDirectory,SubDir,FilenamePrefix,'txt',InitialDEM,RefDod,RefStd,Normalize,colormap)
 
     # add legend
     fig.legend(dia.samplePoints,
@@ -93,5 +147,6 @@ if __name__ == '__main__':
                numpoints=1, prop=dict(size='medium'), loc='upper right')
 
 
-    plt.tight_layout()
-    plt.savefig(DataDirectory+"taylor_diagram.png",format="png",dpi=300)
+    plt.subplots_adjust(left=0.05) # just some figure adjustment to allow space for legend
+    # save the figure
+    plt.savefig(DataDirectory"taylor_diagram_time_series.png",format="png",dpi=300)
