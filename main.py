@@ -84,7 +84,7 @@ def test1():
     dia.add_sample(pointsd, pointcp, marker=markerstyle, ms=markersize, ls='', mfc=color, mec='k', label=DEMFileName[len(DataDirectory):len(DEMFileName)-4])
     
     # D3
-    color = plt.matplotlib.cm.Wistia(0.9)
+    color = plt.matplotlib.cm.spring(0.9)
     DEMFileName = DataDirectory+'D4-210.txt'
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
     if (Normalize == 1):
@@ -142,8 +142,8 @@ def test2():
     dia2.add_grid()
     
     # Add RMS contours, and label them
-    contours = dia.add_contours(colors='0.5')
-    PLT.clabel(contours, inline=1, fontsize=10, fmt='%.2f')
+    #contours = dia.add_contours(colors='0.5')
+    #PLT.clabel(contours, inline=1, fontsize=10, fmt='%.2f')
     contours = dia1.add_contours(colors='0.5')
     PLT.clabel(contours, inline=1, fontsize=10, fmt='%.2f')
     contours = dia2.add_contours(colors='0.5')
@@ -185,7 +185,7 @@ def test2():
     
     # D4
     files = sorted(glob(DataDirectory+'D4*.txt'))
-    colors = plt.matplotlib.cm.Wistia(np.linspace(0.3, 0.7, n_files))
+    colors = plt.matplotlib.cm.spring(np.linspace(0.3, 0.7, n_files))
     
     for i, DEMFileName in enumerate(files):
         pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
@@ -284,7 +284,7 @@ def test3():
     RefDod, RefStd = ReadReference(InitialDEM,DataDirectory+RefFileName)
     
     # n = 1.5
-    color = plt.matplotlib.cm.Wistia(0.9)
+    color = plt.matplotlib.cm.spring(0.9)
     DEMFileName = DataDirectory+'movern_0p35_n_is_one_and_half60.bil'
     pointcp, pointsd = CalculateTaylorPoint(DEMFileName,InitialDEM,RefDod)
     if (Normalize == 1):
